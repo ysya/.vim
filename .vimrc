@@ -48,6 +48,7 @@ Bundle 'hdima/python-syntax'
 Bundle 'klen/python-mode'
 Bundle 'lilydjwg/colorizer'
 Bundle 'mhinz/vim-signify'
+Bundle 'nathanaelkane/vim-indent-guides'
 
 " Relative numbering of lines (0 is the current line)
 " (disabled by default because is very intrusive and can't be easily toggled
@@ -104,6 +105,13 @@ ca w!! w !sudo tee "%"
    " colorscheme delek
 "endif
 
+"folding settings
+set foldmethod=indent "fold based on indent
+set foldnestmax=10 "deepest fold is 10 levels
+set nofoldenable "disable folding by default
+set foldlevel=1
+
+
 colorscheme molokai
 
 " when scrolling, keep cursor 3 lines away from screen border
@@ -158,7 +166,6 @@ let g:syntastic_enable_signs = 0
 "let g:syntastic_warning_symbol = '⚠'
 "let g:syntastic_style_error_symbol = '✗'
 "let g:syntastic_style_warning_symbol = '⚠'
-
 let g:syntastic_error_symbol = '✗'	"set error or warning signs
 let g:syntastic_warning_symbol = '⚠'
 let g:syntastic_check_on_open=1
@@ -200,9 +207,40 @@ vnoremap <Leader>t :Tabularize /
 
 " YCM
 
+let g:ycm_filetype_blacklist = {
+      \ 'tagbar' : 1,
+      \ 'qf' : 1,
+      \ 'notes' : 1,
+      \ 'markdown' : 1,
+      \ 'unite' : 1,
+      \ 'text' : 1,
+      \ 'vimwiki' : 1,
+      \ 'gitcommit' : 1,
+      \}
 let g:ycm_error_symbol = '✗'
 let g:ycm_warning_symbol = '⚠'
-let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py' 
+let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+set completeopt=longest,menu
+autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
+inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
+inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
+inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
+inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
+"let g:ycm_key_list_select_completion=['<c-n>']
+let g:ycm_key_list_select_completion = ['<Down>']
+"let g:ycm_key_list_previous_completion=['<c-p>']
+let g:ycm_key_list_previous_completion = ['<Up>']
+let g:ycm_confirm_extra_conf=0
+let g:ycm_collect_identifiers_from_tags_files=1
+let g:ycm_cache_omnifunc=0
+let g:ycm_seed_identifiers_with_syntax=1
+"nnoremap <leader>lo :lopen<CR>	"open locationlist
+"nnoremap <leader>lc :lclose<CR>	"close locationlist
+inoremap <leader><leader> <C-x><C-o>
+let g:ycm_complete_in_comments = 1
+let g:ycm_complete_in_strings = 1
+let g:ycm_collect_identifiers_from_comments_and_strings = 0
 
 " Airline ------------------------------
 
@@ -225,6 +263,20 @@ highlight DiffChange        cterm=bold ctermbg=none ctermfg=227
 highlight SignifySignAdd    cterm=bold ctermbg=237  ctermfg=119
 highlight SignifySignDelete cterm=bold ctermbg=237  ctermfg=167
 highlight SignifySignChange cterm=bold ctermbg=237  ctermfg=227
+
+"vim-indent-guides--------
+
+let g:indent_guides_start_level = 2
+let g:indent_guides_space_guides = 0
+let g:indent_guides_guide_size = 1
+let g:indent_guides_enable_on_vim_startup = 1
+
+" Ultisnips--------
+"
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+"let g:UltiSnipsSnippetDirectories=["snippets", "bundle/ultisnips/UltiSnips"]
 
 " Window Chooser ------------------------------
 
