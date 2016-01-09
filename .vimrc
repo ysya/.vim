@@ -49,6 +49,7 @@ Bundle 'klen/python-mode'
 Bundle 'lilydjwg/colorizer'
 Bundle 'mhinz/vim-signify'
 Bundle 'nathanaelkane/vim-indent-guides'
+Bundle 'scrooloose/nerdtree'
 
 " Relative numbering of lines (0 is the current line)
 " (disabled by default because is very intrusive and can't be easily toggled
@@ -67,6 +68,9 @@ set ic
 set nu
 set tabstop=4
 set shiftwidth=4
+set expandtab
+set softtabstop=4
+set smarttab
 set history=1000             " keep 1000 lines of command line history
 set number                   " enable line numbers
 set autoindent               " enable autoindent
@@ -99,7 +103,7 @@ ca w!! w !sudo tee "%"
 
 " use 256 colors when possible
 "if &term =~? 'mlterm\|xterm\|xterm-256\|screen-256'
-	"let &t_Co = 256
+    "let &t_Co = 256
     "colorscheme fisa
 "else
    " colorscheme delek
@@ -166,7 +170,7 @@ let g:syntastic_enable_signs = 0
 "let g:syntastic_warning_symbol = '⚠'
 "let g:syntastic_style_error_symbol = '✗'
 "let g:syntastic_style_warning_symbol = '⚠'
-let g:syntastic_error_symbol = '✗'	"set error or warning signs
+let g:syntastic_error_symbol = '✗'  "set error or warning signs
 let g:syntastic_warning_symbol = '⚠'
 let g:syntastic_check_on_open=1
 let g:syntastic_enable_highlighting = 0
@@ -179,7 +183,7 @@ let g:syntastic_cpp_remove_include_errors = 1
 let g:syntastic_cpp_check_header = 1
 let g:syntastic_cpp_compiler = 'clang++'
 let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libstdc++'
-let g:syntastic_enable_balloons = 1	"whether to show balloons
+let g:syntastic_enable_balloons = 1 "whether to show balloons
 
 "Python-mode ------------------------------
 
@@ -235,8 +239,8 @@ let g:ycm_confirm_extra_conf=0
 let g:ycm_collect_identifiers_from_tags_files=1
 let g:ycm_cache_omnifunc=0
 let g:ycm_seed_identifiers_with_syntax=1
-"nnoremap <leader>lo :lopen<CR>	"open locationlist
-"nnoremap <leader>lc :lclose<CR>	"close locationlist
+"nnoremap <leader>lo :lopen<CR> "open locationlist
+"nnoremap <leader>lc :lclose<CR>    "close locationlist
 inoremap <leader><leader> <C-x><C-o>
 let g:ycm_complete_in_comments = 1
 let g:ycm_complete_in_strings = 1
@@ -265,11 +269,13 @@ highlight SignifySignDelete cterm=bold ctermbg=237  ctermfg=167
 highlight SignifySignChange cterm=bold ctermbg=237  ctermfg=227
 
 "vim-indent-guides--------
-
 let g:indent_guides_start_level = 2
-let g:indent_guides_space_guides = 0
+let g:indent_guides_space_guides = 1
 let g:indent_guides_guide_size = 1
-let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_color_change_percent = 30
+let g:indent_guides_auto_colors=0
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=235
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=235
 
 " Ultisnips--------
 "
@@ -277,6 +283,15 @@ let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 "let g:UltiSnipsSnippetDirectories=["snippets", "bundle/ultisnips/UltiSnips"]
+
+" nerdtree ----------------
+
+map <C-n> :NERDTreeToggle<CR>
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+let g:NERDTreeDirArrowExpandable = '▸'
+let g:NERDTreeDirArrowCollapsible = '▾'
 
 " Window Chooser ------------------------------
 
