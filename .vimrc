@@ -236,8 +236,8 @@ let g:ycm_warning_symbol = '⚠'
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 set completeopt=longest,menu
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
-let g:ycm_key_list_select_completion=['<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion=['<C-p>', '<Up>']
+"let g:ycm_key_list_select_completion=['<C-n>', '<Down>']
+"let g:ycm_key_list_previous_completion=['<C-p>', '<Up>']
 let g:ycm_confirm_extra_conf=0
 let g:ycm_collect_identifiers_from_tags_files=1
 let g:ycm_cache_omnifunc=0
@@ -249,6 +249,22 @@ let g:ycm_complete_in_comments = 1
 let g:ycm_complete_in_strings = 1
 let g:ycm_autoclose_preview_window_after_completion=1
 let g:ycm_collect_identifiers_from_comments_and_strings = 0
+
+au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
+function! g:UltiSnips_Complete()
+    call UltiSnips_ExpandSnippet()
+    if g:ulti_expand_res == 0
+        if pumvisible()
+            return "\<C-n>"
+        else
+            call UltiSnips_JumpForwards()
+            if g:ulti_jump_forwards_res == 0
+               return "\<TAB>"
+            endif
+        endif
+    endif
+    return ""
+endfunction
 
 " Airline ------------------------------
 
@@ -286,7 +302,7 @@ autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=235
 let g:UltiSnipsSnippetDirectories=["mysnippets"]
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+"let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 "let g:UltiSnipsSnippetDirectories=["snippets", "bundle/ultisnips/UltiSnips"]
 
 " nerdtree ----------------
