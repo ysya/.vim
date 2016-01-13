@@ -31,6 +31,7 @@ if iCanHazVundle == 0
     :BundleInstall
 endif
 " --------------------------------------
+" ycm may not work on anaconda python, I'm finding solution
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'mattn/emmet-vim'
 Bundle 'kien/ctrlp.vim'
@@ -74,6 +75,7 @@ set smarttab
 set history=1000             " keep 1000 lines of command line history
 set number                   " enable line numbers
 set autoindent               " enable autoindent
+set smartindent
 syntax on                    " enable syntax highlighting
 set autoread                 " auto read when file is changed from outside
 set history=50               " keep 50 lines of command line history
@@ -98,16 +100,12 @@ set t_Co=256
 " Disabled by default because preview makes the window flicker
 set completeopt-=preview
 
+" compile python by leader+c
+" if roy use anaconda, change your path by yourself
+map <leader>c :!/usr/local/bin/python %<cr>
 " save as sudo
 ca w!! w !sudo tee "%"
 
-" use 256 colors when possible
-"if &term =~? 'mlterm\|xterm\|xterm-256\|screen-256'
-    "let &t_Co = 256
-    "colorscheme fisa
-"else
-   " colorscheme delek
-"endif
 
 "folding settings
 set foldmethod=indent "fold based on indent
@@ -146,6 +144,9 @@ endif
 "------------------------------------------
 " Plugins settings and mappings
 
+nmap <leader><left> gT
+nmap <leader><right> gt
+
 " Vim-easymotion
 map  / <Plug>(easymotion-sn)
 map  n <Plug>(easymotion-next)
@@ -157,6 +158,8 @@ let g:EasyMotion_startofline = 0
 let g:EasyMotion_smartcase = 1
 
 " Syntastic ------------------------------
+let g:syntastic_ignore_files=[".*.py$"]
+let python_highlight_all = 1
 
 " show list of errors and warnings on the current file
 nmap <leader>e :Errors<CR>
@@ -245,6 +248,7 @@ inoremap <leader><leader> <C-x><C-o>
 let g:ycm_complete_in_comments = 1
 let g:ycm_complete_in_strings = 1
 let g:ycm_collect_identifiers_from_comments_and_strings = 0
+
 
 " Airline ------------------------------
 
