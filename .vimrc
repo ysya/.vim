@@ -45,12 +45,13 @@ Bundle 'bronson/vim-trailing-whitespace'
 Bundle 'sirver/ultisnips'
 Bundle 'godlygeek/tabular'
 Bundle 'scrooloose/syntastic'
-Bundle 'hdima/python-syntax'
+"Bundle 'hdima/python-syntax'
 Bundle 'klen/python-mode'
 Bundle 'lilydjwg/colorizer'
 Bundle 'mhinz/vim-signify'
 Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'scrooloose/nerdtree'
+
 
 " Relative numbering of lines (0 is the current line)
 " (disabled by default because is very intrusive and can't be easily toggled
@@ -86,6 +87,7 @@ set showmatch                " Cursor shows matching ) and }
 set showmode                 " Show current mode
 set backspace=2              " make backspace work like most other apps
 set hlsearch
+set wildmenu
 set wildmode=longest,list,full
 set incsearch
 set ignorecase
@@ -110,9 +112,10 @@ ca w!! w !sudo tee "%"
 "folding settings
 set foldmethod=indent "fold based on indent
 set foldnestmax=10 "deepest fold is 10 levels
-set nofoldenable "disable folding by default
+set foldenable "disable folding by default
 set foldlevel=1
-
+set foldcolumn=0
+nnoremap @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')
 
 colorscheme molokai
 
@@ -159,7 +162,6 @@ let g:EasyMotion_smartcase = 1
 
 " Syntastic ------------------------------
 let g:syntastic_ignore_files=[".*.py$"]
-let python_highlight_all = 1
 
 " show list of errors and warnings on the current file
 nmap <leader>e :Errors<CR>
@@ -167,15 +169,8 @@ nmap <leader>e :Errors<CR>
 let g:syntastic_check_on_open = 1
 " don't put icons on the sign column (it hides the vcs status icons of signify)
 let g:syntastic_enable_signs = 0
-" custom icons (enable them if you use a patched font, and enable the previous 
-" setting)
-"let g:syntastic_error_symbol = '✗'
-"let g:syntastic_warning_symbol = '⚠'
-"let g:syntastic_style_error_symbol = '✗'
-"let g:syntastic_style_warning_symbol = '⚠'
 let g:syntastic_error_symbol = '✗'  "set error or warning signs
 let g:syntastic_warning_symbol = '⚠'
-let g:syntastic_check_on_open=1
 let g:syntastic_enable_highlighting = 0
 "let g:syntastic_python_checker="flake8,pyflakes,pep8,pylint"
 let g:syntastic_python_checkers=['pyflakes']
@@ -189,16 +184,30 @@ let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libstdc++'
 let g:syntastic_enable_balloons = 1 "whether to show balloons
 
 "Python-mode ------------------------------
-
-" don't use linter, we use syntastic for that
-let g:pymode_lint_on_write = 0
-let g:pymode_lint_signs = 0
-" don't fold python code on open
-let g:pymode_folding = 0
-" don't load rope by default. Change to 1 to use rope
-let g:pymode_rope = 0
-" open definitions on same window, and custom mappings for definitions and
-" occurrences
+let python_highlight_all = 1
+let g:pymode_rope = 1
+" Documentation
+let g:pymode_doc = 1
+let g:pymode_doc_key = 'K'
+"Linting
+let g:pymode_lint = 1
+let g:pymode_lint_checker = "pyflakes,pep8"
+let g:pymode_lint_write = 1
+let g:pymode_lint_unmodified = 0
+let g:pymode_lint_message = 1
+let g:pymode_lint_cwindow = 1
+let g:pymode_virtualenv = 1
+" Enable breakpoints plugin
+let g:pymode_breakpoint = 1
+let g:pymode_breakpoint_bind = '<leader>b'
+" syntax highlighting
+let g:pymode_syntax = 1
+let g:pymode_syntax_all = 1
+let g:pymode_syntax_indent_errors = g:pymode_syntax_all
+let g:pymode_syntax_space_errors = g:pymode_syntax_all
+let g:pymode_folding = 1
+let g:pymode_options_colorcolumn = 0
+let g:pymode_indent = 1
 let g:pymode_rope_goto_definition_bind = ',d'
 let g:pymode_rope_goto_definition_cmd = 'e'
 nmap ,D :tab split<CR>:PymodePython rope.goto()<CR>
@@ -208,12 +217,10 @@ nmap ,o :RopeFindOccurrences<CR>
 let g:closetag_filenames = "*.html,*.htm,*.xhtml,*.phtml,*php"
 
 " Tabular
-
 nnoremap <Leader>t :Tabularize /
 vnoremap <Leader>t :Tabularize /
 
 " YCM
-
 let g:ycm_filetype_blacklist = {
       \ 'tagbar' : 1,
       \ 'qf' : 1,
@@ -229,15 +236,8 @@ let g:ycm_warning_symbol = '⚠'
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 set completeopt=longest,menu
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
-inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
-inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
-inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
-inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
-inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
-"let g:ycm_key_list_select_completion=['<c-n>']
-let g:ycm_key_list_select_completion = ['<Down>']
-"let g:ycm_key_list_previous_completion=['<c-p>']
-let g:ycm_key_list_previous_completion = ['<Up>']
+let g:ycm_key_list_select_completion=['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion=['<C-p>', '<Up>']
 let g:ycm_confirm_extra_conf=0
 let g:ycm_collect_identifiers_from_tags_files=1
 let g:ycm_cache_omnifunc=0
@@ -247,8 +247,8 @@ let g:ycm_seed_identifiers_with_syntax=1
 inoremap <leader><leader> <C-x><C-o>
 let g:ycm_complete_in_comments = 1
 let g:ycm_complete_in_strings = 1
+let g:ycm_autoclose_preview_window_after_completion=1
 let g:ycm_collect_identifiers_from_comments_and_strings = 0
-
 
 " Airline ------------------------------
 
@@ -283,36 +283,30 @@ autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=235
 
 " Ultisnips--------
 "
-let g:UltiSnipsExpandTrigger = "<tab>"
-let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsSnippetDirectories=["mysnippets"]
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 "let g:UltiSnipsSnippetDirectories=["snippets", "bundle/ultisnips/UltiSnips"]
 
 " nerdtree ----------------
 
-map <C-n> :NERDTreeToggle<CR>
+map <leader>tr :NERDTreeToggle<CR>
+let NERDTreeShowHidden=1
+let NERDTreeAutoDeleteBuffer=1
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
 
-" Window Chooser ------------------------------
+" supertab------------
+
+" vim-instant-markdown
+let g:instant_markdown_autostart = 0
 
 " mapping
 nmap  -  <Plug>(choosewin)
 " show big letters
 let g:choosewin_overlay_enable = 1
-" to use fancy symbols for airline, uncomment the following lines and use a
-" patched font (more info on the README.rst)
-"if !exists('g:airline_symbols')
-"   let g:airline_symbols = {}
-"endif
-"let g:airline_left_sep = '⮀'
-"let g:airline_left_alt_sep = '⮁'
-"let g:airline_right_sep = '⮂'
-"let g:airline_right_alt_sep = '⮃'
-"let g:airline_symbols.branch = '⭠'
-"let g:airline_symbols.readonly = '⭤'
-"let g:airline_symbols.linenr = '⭡'
 
