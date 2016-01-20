@@ -43,6 +43,7 @@ Bundle 'alvan/vim-closetag'
 Bundle 'ervandew/supertab'
 Bundle 'bronson/vim-trailing-whitespace'
 Bundle 'sirver/ultisnips'
+Bundle 'honza/vim-snippets'
 Bundle 'godlygeek/tabular'
 Bundle 'scrooloose/syntastic'
 "Bundle 'hdima/python-syntax'
@@ -51,12 +52,12 @@ Bundle 'lilydjwg/colorizer'
 Bundle 'mhinz/vim-signify'
 Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'scrooloose/nerdtree'
-
+Bundle 'scrooloose/nerdcommenter'
 
 " Relative numbering of lines (0 is the current line)
 " (disabled by default because is very intrusive and can't be easily toggled
-" on/off. When the plugin is present, will always activate the relative 
-" numbering every time you go to normal mode. Author refuses to add a setting 
+" on/off. When the plugin is present, will always activate the relative
+" numbering every time you go to normal mode. Author refuses to add a setting
 " to avoid that)
 " Bundle 'myusuf3/numbers.vim'
 Bundle 'matchit.zip'
@@ -102,9 +103,6 @@ set t_Co=256
 " Disabled by default because preview makes the window flicker
 set completeopt-=preview
 
-" compile python by leader+c
-" if roy use anaconda, change your path by yourself
-map <leader>c :!/usr/local/bin/python %<cr>
 " save as sudo
 ca w!! w !sudo tee "%"
 
@@ -144,6 +142,28 @@ if !isdirectory(&undodir)
     call mkdir(&undodir, "p")
 endif
 
+" Jump to the last place when you left
+autocmd BufReadPost *
+    \ if line("'\"") > 1 && line("'\"") <= line("$") |
+    \   exe "normal! g`\"" |
+    \ endif
+"}
+
+" This will wrok if your terminal support bracketed paste mode
+if &term =~ "xterm.*"
+    let &t_ti = &t_ti . "\e[?2004h"
+    let &t_te = "\e[?2004l" . &t_te
+    function XTermPasteBegin(ret)
+        set pastetoggle=<Esc>[201~
+        set paste
+        return a:ret
+    endfunction
+    map <expr> <Esc>[200~ XTermPasteBegin("i")
+    imap <expr> <Esc>[200~ XTermPasteBegin("")
+    cmap <Esc>[200~ <nop>
+    cmap <Esc>[201~ <nop>
+endif
+
 "------------------------------------------
 " Plugins settings and mappings
 
@@ -173,7 +193,7 @@ let g:syntastic_error_symbol = '✗'  "set error or warning signs
 let g:syntastic_warning_symbol = '⚠'
 let g:syntastic_enable_highlighting = 0
 "let g:syntastic_python_checker="flake8,pyflakes,pep8,pylint"
-let g:syntastic_python_checkers=['pyflakes']
+"let g:syntastic_python_checkers=['pyflakes']
 "highlight SyntasticErrorSign guifg=white guibg=black
 
 let g:syntastic_cpp_include_dirs = ['/usr/include/']
@@ -181,14 +201,16 @@ let g:syntastic_cpp_remove_include_errors = 1
 let g:syntastic_cpp_check_header = 1
 let g:syntastic_cpp_compiler = 'clang++'
 let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libstdc++'
-let g:syntastic_enable_balloons = 1 "whether to show balloons
+let g:syntastic_enable_balloons = 1
 
 "Python-mode ------------------------------
+let g:pymode_run = 1
+let g:pymode_run_bind = "<C-S-e>"
 let python_highlight_all = 1
 let g:pymode_rope = 1
 " Documentation
 let g:pymode_doc = 1
-let g:pymode_doc_key = 'K'
+let g:pymode_doc_bind = "<C-S-d>"
 "Linting
 let g:pymode_lint = 1
 let g:pymode_lint_checker = "pyflakes,pep8"
@@ -210,15 +232,31 @@ let g:pymode_options_colorcolumn = 0
 let g:pymode_indent = 1
 let g:pymode_rope_goto_definition_bind = ',d'
 let g:pymode_rope_goto_definition_cmd = 'e'
-nmap ,D :tab split<CR>:PymodePython rope.goto()<CR>
-nmap ,o :RopeFindOccurrences<CR>
 
 " closetag
 let g:closetag_filenames = "*.html,*.htm,*.xhtml,*.phtml,*php"
 
 " Tabular
-nnoremap <Leader>t :Tabularize /
-vnoremap <Leader>t :Tabularize /
+let mapleader=','
+if exists(":Tabularize")
+    nmap <Leader>a= :Tabularize /=<CR>
+    vmap <Leader>a= :Tabularize /=<CR>
+    nmap <Leader>a: :Tabularize /:\zs<CR>
+    vmap <Leader>a: :Tabularize /:\zs<CR>
+endif
+
+inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
+
+function! s:align()
+    let p = '^\s*|\s.*\s|\s*$'
+    if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+        let column = strlen(su bstitute(getline('.')[0:col('.')],'[^|]','','g'))
+        let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
+        Tabularize/|/l1
+        normal! 0
+        call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
+    endif
+endfunction
 
 " YCM
 let g:ycm_filetype_blacklist = {
@@ -230,41 +268,40 @@ let g:ycm_filetype_blacklist = {
       \ 'text' : 1,
       \ 'vimwiki' : 1,
       \ 'gitcommit' : 1,
+      \ 'nerdtree' : 1,
       \}
 let g:ycm_error_symbol = '✗'
 let g:ycm_warning_symbol = '⚠'
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 set completeopt=longest,menu
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
-"let g:ycm_key_list_select_completion=['<C-n>', '<Down>']
-"let g:ycm_key_list_previous_completion=['<C-p>', '<Up>']
+inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
+inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
+inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
+inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
+inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
+let g:ycm_key_list_select_completion=['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion=['<C-p>', '<Up>']
 let g:ycm_confirm_extra_conf=0
 let g:ycm_collect_identifiers_from_tags_files=1
 let g:ycm_cache_omnifunc=0
 let g:ycm_seed_identifiers_with_syntax=1
-"nnoremap <leader>lo :lopen<CR> "open locationlist
-"nnoremap <leader>lc :lclose<CR>    "close locationlist
-inoremap <leader><leader> <C-x><C-o>
 let g:ycm_complete_in_comments = 1
 let g:ycm_complete_in_strings = 1
 let g:ycm_autoclose_preview_window_after_completion=1
 let g:ycm_collect_identifiers_from_comments_and_strings = 0
+nnoremap <leader>lo :lopen<CR> "open locationlist
+nnoremap <leader>lc :lclose<CR>    "close locationlist
+inoremap <leader><leader> <C-x><C-o>
+let g:ycm_key_invoke_completion = '<C-q>'
 
-au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
-function! g:UltiSnips_Complete()
-    call UltiSnips_ExpandSnippet()
-    if g:ulti_expand_res == 0
-        if pumvisible()
-            return "\<C-n>"
-        else
-            call UltiSnips_JumpForwards()
-            if g:ulti_jump_forwards_res == 0
-               return "\<TAB>"
-            endif
-        endif
-    endif
-    return ""
-endfunction
+" Ultisnips--------
+let g:UltiSnipsSnippetDirectories=["mysnippets"]
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+"let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+let g:UltiSnipsSnippetsDir = "~/.vim/bundle/ultisnips/UltiSnips"
+let g:UltiSnipsSnippetDirectories=["UltiSnips"]
 
 " Airline ------------------------------
 
@@ -297,13 +334,7 @@ let g:indent_guides_auto_colors=0
 autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=235
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=235
 
-" Ultisnips--------
-"
-let g:UltiSnipsSnippetDirectories=["mysnippets"]
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-"let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-"let g:UltiSnipsSnippetDirectories=["snippets", "bundle/ultisnips/UltiSnips"]
+let g:NERDSpaceDelims=1
 
 " nerdtree ----------------
 
@@ -316,13 +347,13 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
 
-" supertab------------
-
-" vim-instant-markdown
-let g:instant_markdown_autostart = 0
-
 " mapping
 nmap  -  <Plug>(choosewin)
+" compile python by leader+c
+" if roy use anaconda, change your path by yourself
+map <leader>c :!/usr/local/bin/python %<cr>
+
+
 " show big letters
 let g:choosewin_overlay_enable = 1
 
