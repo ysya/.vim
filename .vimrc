@@ -34,6 +34,7 @@ endif
 " ycm may not work on anaconda python, I'm finding solution
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'mattn/emmet-vim'
+Bundle 'mattn/webapi-vim'
 Bundle 'kien/ctrlp.vim'
 Bundle 'bling/vim-airline'
 Bundle 'tpope/vim-surround'
@@ -149,21 +150,6 @@ autocmd BufReadPost *
     \ endif
 "}
 
-" This will wrok if your terminal support bracketed paste mode
-if &term =~ "xterm.*"
-    let &t_ti = &t_ti . "\e[?2004h"
-    let &t_te = "\e[?2004l" . &t_te
-    function XTermPasteBegin(ret)
-        set pastetoggle=<Esc>[201~
-        set paste
-        return a:ret
-    endfunction
-    map <expr> <Esc>[200~ XTermPasteBegin("i")
-    imap <expr> <Esc>[200~ XTermPasteBegin("")
-    cmap <Esc>[200~ <nop>
-    cmap <Esc>[201~ <nop>
-endif
-
 "------------------------------------------
 " Plugins settings and mappings
 
@@ -233,6 +219,11 @@ let g:pymode_indent = 1
 let g:pymode_rope_goto_definition_bind = ',d'
 let g:pymode_rope_goto_definition_cmd = 'e'
 
+" html auto-complete
+autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+"let g:user_emmet_settings = webapi#json#decode(join(readfile(expand('~/.snippets_custom.json')), "\n"))
+inoremap <C-x>x <C-x><C-o>
+
 " closetag
 let g:closetag_filenames = "*.html,*.htm,*.xhtml,*.phtml,*php"
 
@@ -273,6 +264,7 @@ let g:ycm_filetype_blacklist = {
 let g:ycm_error_symbol = '✗'
 let g:ycm_warning_symbol = '⚠'
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+"let g:ycm_path_to_python_interpreter = '/usr/local/bin/python'
 set completeopt=longest,menu
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
@@ -292,7 +284,6 @@ let g:ycm_autoclose_preview_window_after_completion=1
 let g:ycm_collect_identifiers_from_comments_and_strings = 0
 nnoremap <leader>lo :lopen<CR> "open locationlist
 nnoremap <leader>lc :lclose<CR>    "close locationlist
-inoremap <leader><leader> <C-x><C-o>
 let g:ycm_key_invoke_completion = '<C-q>'
 
 " Ultisnips--------
@@ -351,8 +342,10 @@ let g:NERDTreeDirArrowCollapsible = '▾'
 nmap  -  <Plug>(choosewin)
 " compile python by leader+c
 " if roy use anaconda, change your path by yourself
-map <leader>c :!/usr/local/bin/python %<cr>
-
+map <leader>p :!/usr/local/bin/python %<cr>
+set pastetoggle=<F10>
+vnoremap <D>c "+y
+set clipboard=unnamedplus
 
 " show big letters
 let g:choosewin_overlay_enable = 1
