@@ -344,8 +344,7 @@ nmap  -  <Plug>(choosewin)
 " if roy use anaconda, change your path by yourself
 map <leader>p :!/usr/local/bin/python %<cr>
 set pastetoggle=<F10>
-vnoremap <D>c "+y
-set clipboard=unnamedplus
+set clipboard=unnamed
 
 " show big letters
 let g:choosewin_overlay_enable = 1
