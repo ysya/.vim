@@ -37,6 +37,7 @@ Bundle 'mattn/emmet-vim'
 Bundle 'mattn/webapi-vim'
 Bundle 'kien/ctrlp.vim'
 Bundle 'bling/vim-airline'
+Bundle 'vim-airline/vim-airline-themes'
 Bundle 'tpope/vim-surround'
 Bundle 'airblade/vim-gitgutter'
 Bundle 'easymotion/vim-easymotion'
@@ -345,6 +346,8 @@ nmap  -  <Plug>(choosewin)
 map <leader>p :!/usr/local/bin/python %<cr>
 set pastetoggle=<F10>
 set clipboard=unnamed
+let mapleader = ","
+let g:mapleader = ","
 
 " show big letters
 let g:choosewin_overlay_enable = 1
