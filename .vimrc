@@ -50,11 +50,16 @@ Bundle 'godlygeek/tabular'
 Bundle 'scrooloose/syntastic'
 "Bundle 'hdima/python-syntax'
 Bundle 'klen/python-mode'
+Bundle 'moll/vim-node'
+Bundle 'jelera/vim-javascript-syntax'
+Bundle 'othree/javascript-libraries-syntax.vim'
 Bundle 'lilydjwg/colorizer'
 Bundle 'mhinz/vim-signify'
 Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'scrooloose/nerdtree'
-Bundle 'scrooloose/nerdcommenter'
+Bundle 'Xuyuanp/nerdtree-git-plugin'
+"Bundle 'scrooloose/nerdcommenter'
+Bundle 'tomtom/tcomment_vim'
 
 " Relative numbering of lines (0 is the current line)
 " (disabled by default because is very intrusive and can't be easily toggled
@@ -66,8 +71,6 @@ Bundle 'matchit.zip'
 " ----------------------------------------------
 " Vim settings and mappings
 filetype plugin indent on    " enable filetype-specific plugins
-filetype plugin on           " enable loading the plugin files for specific file types
-filetype indent on           " enable loading the indent file for specific file types
 set ai
 set ic
 set nu
@@ -169,11 +172,11 @@ let g:EasyMotion_smartcase = 1
 
 " Syntastic ------------------------------
 let g:syntastic_ignore_files=[".*.py$"]
-
 " show list of errors and warnings on the current file
 nmap <leader>e :Errors<CR>
 " check also when just opened the file
 let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 " don't put icons on the sign column (it hides the vcs status icons of signify)
 let g:syntastic_enable_signs = 0
 let g:syntastic_error_symbol = '✗'  "set error or warning signs
@@ -182,7 +185,6 @@ let g:syntastic_enable_highlighting = 0
 "let g:syntastic_python_checker="flake8,pyflakes,pep8,pylint"
 "let g:syntastic_python_checkers=['pyflakes']
 "highlight SyntasticErrorSign guifg=white guibg=black
-
 let g:syntastic_cpp_include_dirs = ['/usr/include/']
 let g:syntastic_cpp_remove_include_errors = 1
 let g:syntastic_cpp_check_header = 1
@@ -229,7 +231,6 @@ inoremap <C-x>x <C-x><C-o>
 let g:closetag_filenames = "*.html,*.htm,*.xhtml,*.phtml,*php"
 
 " Tabular
-let mapleader=','
 if exists(":Tabularize")
     nmap <Leader>a= :Tabularize /=<CR>
     vmap <Leader>a= :Tabularize /=<CR>
@@ -288,12 +289,12 @@ nnoremap <leader>lc :lclose<CR>    "close locationlist
 let g:ycm_key_invoke_completion = '<C-q>'
 
 " Ultisnips--------
-let g:UltiSnipsSnippetDirectories=["mysnippets"]
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 "let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-let g:UltiSnipsSnippetsDir = "~/.vim/bundle/ultisnips/UltiSnips"
-let g:UltiSnipsSnippetDirectories=["UltiSnips"]
+let g:UltiSnipsSnippetsDir = '~/.vim/bundle/vim-snippets/UltiSnips'
+let g:UltiSnipsSnippetDirectories=['UltiSnips']
+"let g:UltiSnipsSnippetDirectories=["ultisnips", 'UltiSnips']
 
 " Airline ------------------------------
 
@@ -339,15 +340,50 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
 
+" vim-node---------
+autocmd User Node if &filetype == "javascript" | setlocal expandtab | endif
+au FileType javascript call JavaScriptFold()
+
+" javascript-libraries-syntax.vim---------
+"let g:used_javascript_libs = 'underscore,backbone,angularjs'
+
+" tcomment------------------
+let g:tc_option = ' col=1'
+noremap <silent> <expr> <LocalLeader>cc ":TComment       " . (exists('b:tc_option') ? b:tc_option : g:tc_option) . "<CR>"
+noremap <silent> <expr> <LocalLeader>cb ":TCommentBlock  " . (exists('b:tc_option') ? b:tc_option : g:tc_option) . "<CR>"
+noremap <silent> <expr> <LocalLeader>ci ":TCommentInline " . (exists('b:tc_option') ? b:tc_option : g:tc_option) . "<CR>"
+noremap <silent> <expr> <LocalLeader>c$ ":TCommentRight  " . (exists('b:tc_option') ? b:tc_option : g:tc_option) . "<CR>"
+
+let g:EnhCommentifyRespectIndent = 'No'
+let g:EnhCommentifyUseSyntax = 'Yes'
+let g:EnhCommentifyPretty = 'Yes'
+let g:EnhCommentifyBindInInsert = 'No'
+let g:EnhCommentifyMultiPartBlocks = 'Yes'
+let g:EnhCommentifyCommentsOp = 'Yes'
+let g:EnhCommentifyAlignRight = 'Yes'
+
+" 為各別 filetype 分別設定 tc_option ……
+fun! s:js_rc()
+  let b:tc_option = ''
+endf
+fun! s:haml_rc()
+  let b:tc_option = ''
+endf
+fun! s:ruby_rc()
+  let b:tc_option = ''
+endf
+au FileType ruby :call s:ruby_rc()
+au FileType haml :call s:haml_rc()
+au FileType javascript :call s:js_rc()
 " mapping
 nmap  -  <Plug>(choosewin)
-" compile python by leader+c
+" compile python by leader+p
 " if roy use anaconda, change your path by yourself
 map <leader>p :!/usr/local/bin/python %<cr>
 set pastetoggle=<F10>
 set clipboard=unnamed
-let mapleader = ","
-let g:mapleader = ","
+"let mapleader = "\"
+"let g:mapleader = "\"
 
 " show big letters
 let g:choosewin_overlay_enable = 1
