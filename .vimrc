@@ -284,6 +284,7 @@ let g:ycm_complete_in_comments = 1
 let g:ycm_complete_in_strings = 1
 let g:ycm_autoclose_preview_window_after_completion=1
 let g:ycm_collect_identifiers_from_comments_and_strings = 0
+let g:ycm_path_to_python_interpreter='/Users/ysya/.pyenv/shims/python'
 nnoremap <leader>lo :lopen<CR> "open locationlist
 nnoremap <leader>lc :lclose<CR>    "close locationlist
 let g:ycm_key_invoke_completion = '<C-q>'
