@@ -48,11 +48,9 @@ Bundle 'sirver/ultisnips'
 Bundle 'honza/vim-snippets'
 Bundle 'godlygeek/tabular'
 Bundle 'scrooloose/syntastic'
+Bundle 'evanmiller/nginx-vim-syntax'
 "Bundle 'hdima/python-syntax'
 Bundle 'klen/python-mode'
-Bundle 'moll/vim-node'
-Bundle 'jelera/vim-javascript-syntax'
-Bundle 'othree/javascript-libraries-syntax.vim'
 Bundle 'lilydjwg/colorizer'
 Bundle 'mhinz/vim-signify'
 Bundle 'nathanaelkane/vim-indent-guides'
@@ -60,6 +58,11 @@ Bundle 'scrooloose/nerdtree'
 Bundle 'Xuyuanp/nerdtree-git-plugin'
 "Bundle 'scrooloose/nerdcommenter'
 Bundle 'tomtom/tcomment_vim'
+
+" nodejs
+Bundle 'moll/vim-node'
+Bundle 'jelera/vim-javascript-syntax'
+Bundle 'othree/javascript-libraries-syntax.vim'
 
 " Relative numbering of lines (0 is the current line)
 " (disabled by default because is very intrusive and can't be easily toggled
