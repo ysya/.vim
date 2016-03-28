@@ -83,7 +83,7 @@ Bundle 'matchit.zip'
 " ----------------------------------------------
 " Vim settings and mappings
 set background=dark
-colorscheme solarized
+colorscheme molokai
 " syntax highlighting
 filetype plugin indent on    " enable filetype-specific plugins
 set spell
