@@ -31,8 +31,9 @@ if iCanHazVundle == 0
     :BundleInstall
 endif
 " --------------------------------------
-" ycm may not work on anaconda python, I'm finding solution
 Bundle 'Valloric/YouCompleteMe'
+Bundle 'hdima/python-syntax'
+Bundle 'klen/python-mode'
 Bundle 'mattn/emmet-vim'
 Bundle 'mattn/webapi-vim'
 Bundle 'kien/ctrlp.vim'
@@ -42,27 +43,35 @@ Bundle 'tpope/vim-surround'
 Bundle 'airblade/vim-gitgutter'
 Bundle 'easymotion/vim-easymotion'
 Bundle 'alvan/vim-closetag'
-Bundle 'ervandew/supertab'
+" Bundle 'ervandew/supertab'
 Bundle 'bronson/vim-trailing-whitespace'
 Bundle 'sirver/ultisnips'
 Bundle 'honza/vim-snippets'
 Bundle 'godlygeek/tabular'
 Bundle 'scrooloose/syntastic'
 Bundle 'evanmiller/nginx-vim-syntax'
-"Bundle 'hdima/python-syntax'
-Bundle 'klen/python-mode'
 Bundle 'lilydjwg/colorizer'
 Bundle 'mhinz/vim-signify'
 Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'scrooloose/nerdtree'
 Bundle 'Xuyuanp/nerdtree-git-plugin'
-"Bundle 'scrooloose/nerdcommenter'
 Bundle 'tomtom/tcomment_vim'
+Bundle 'majutsushi/tagbar'
 
 " nodejs
 Bundle 'moll/vim-node'
+Bundle 'pangloss/vim-javascript'
+" Bundle 'altercation/vim-colors-solarized'
 Bundle 'jelera/vim-javascript-syntax'
+Bundle 'vim-scripts/JavaScript-Indent'
+Bundle 'othree/yajs.vim'
 Bundle 'othree/javascript-libraries-syntax.vim'
+Bundle 'maksimr/vim-jsbeautify'
+Bundle 'ahayman/vim-nodejs-complete'
+Bundle 'ternjs/tern_for_vim'
+Bundle 'mileszs/ack.vim'
+Bundle 'bigfish/vim-js-context-coloring'
+set dictionary+=$VIM.‘~\.vim\bundle\vim-node\dict\node.dict‘
 
 " Relative numbering of lines (0 is the current line)
 " (disabled by default because is very intrusive and can't be easily toggled
@@ -73,7 +82,11 @@ Bundle 'othree/javascript-libraries-syntax.vim'
 Bundle 'matchit.zip'
 " ----------------------------------------------
 " Vim settings and mappings
+set background=dark
+colorscheme mango
+" syntax highlighting
 filetype plugin indent on    " enable filetype-specific plugins
+set spell
 set ai
 set ic
 set nu
@@ -101,8 +114,8 @@ set wildmode=longest,list,full
 set incsearch
 set ignorecase
 set showcmd
+set nowrap
 set enc=utf8                 " add utf-8
-let g:solarized_termcolors=256
 set ls=2                     " always show status bar
 set laststatus=2
 set t_Co=256
@@ -114,7 +127,6 @@ set completeopt-=preview
 " save as sudo
 ca w!! w !sudo tee "%"
 
-
 "folding settings
 set foldmethod=indent "fold based on indent
 set foldnestmax=10 "deepest fold is 10 levels
@@ -122,8 +134,6 @@ set foldenable "disable folding by default
 set foldlevel=1
 set foldcolumn=0
 nnoremap @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')
-
-colorscheme molokai
 
 " when scrolling, keep cursor 3 lines away from screen border
 "set scrolloff=3
@@ -194,6 +204,11 @@ let g:syntastic_cpp_check_header = 1
 let g:syntastic_cpp_compiler = 'clang++'
 let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libstdc++'
 let g:syntastic_enable_balloons = 1
+" use jshint
+let g:syntastic_javascript_checkers = ['jshint']
+let g:syntastic_check_on_open = 1
+let g:syntastic_mode_map = { 'passive_filetypes': ['scss', 'slim'] }
+
 
 "Python-mode ------------------------------
 let g:pymode_run = 1
@@ -214,7 +229,6 @@ let g:pymode_virtualenv = 1
 " Enable breakpoints plugin
 let g:pymode_breakpoint = 1
 let g:pymode_breakpoint_bind = '<leader>b'
-" syntax highlighting
 let g:pymode_syntax = 1
 let g:pymode_syntax_all = 1
 let g:pymode_syntax_indent_errors = g:pymode_syntax_all
@@ -232,6 +246,12 @@ inoremap <C-x>x <C-x><C-o>
 
 " closetag
 let g:closetag_filenames = "*.html,*.htm,*.xhtml,*.phtml,*php"
+
+" tagbar-----------
+let tagbar_left=1
+nnoremap <Leader>tl :TagbarToggle<CR>
+let tagbar_width=32
+let g:tagbar_compact=1
 
 " Tabular
 if exists(":Tabularize")
@@ -269,14 +289,14 @@ let g:ycm_filetype_blacklist = {
 let g:ycm_error_symbol = '✗'
 let g:ycm_warning_symbol = '⚠'
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
-"let g:ycm_path_to_python_interpreter = '/usr/local/bin/python'
-set completeopt=longest,menu
-autocmd InsertLeave * if pumvisible() == 0|pclose|endif
-inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
+let g:ycm_path_to_python_interpreter = '/usr/local/bin/python'
+" set completeopt=longest,menu
+" autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+" inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
 inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
 inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
-inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
-inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
+" inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
+" inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
 let g:ycm_key_list_select_completion=['<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion=['<C-p>', '<Up>']
 let g:ycm_confirm_extra_conf=0
@@ -286,10 +306,10 @@ let g:ycm_seed_identifiers_with_syntax=1
 let g:ycm_complete_in_comments = 1
 let g:ycm_complete_in_strings = 1
 let g:ycm_autoclose_preview_window_after_completion=1
-let g:ycm_collect_identifiers_from_comments_and_strings = 0
-let g:ycm_path_to_python_interpreter='/Users/ysya/.pyenv/shims/python'
-nnoremap <leader>lo :lopen<CR> "open locationlist
-nnoremap <leader>lc :lclose<CR>    "close locationlist
+" let g:ycm_collect_identifiers_from_comments_and_strings = 0
+" let g:ycm_path_to_python_interpreter='/Users/ysya/.pyenv/shims/python'
+" nnoremap <leader>lo :lopen<CR> "open locationlist
+" nnoremap <leader>lc :lclose<CR>    "close locationlist
 let g:ycm_key_invoke_completion = '<C-q>'
 
 " Ultisnips--------
@@ -301,7 +321,6 @@ let g:UltiSnipsSnippetDirectories=['UltiSnips']
 "let g:UltiSnipsSnippetDirectories=["ultisnips", 'UltiSnips']
 
 " Airline ------------------------------
-
 let g:airline_powerline_fonts = 0
 let g:airline_theme = 'bubblegum'
 let g:airline#extensions#whitespace#enabled = 0
@@ -336,8 +355,13 @@ let g:NERDSpaceDelims=1
 " nerdtree ----------------
 
 map <leader>tr :NERDTreeToggle<CR>
+let NERDTreeWinPos="right"
 let NERDTreeShowHidden=1
 let NERDTreeAutoDeleteBuffer=1
+let NERDTreeCaseSensitiveSort=1
+let NERDTreeMinimalUI=1
+let NERDTreeChDirMode=1
+let NERDTreeShowBookmarks=1
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -345,11 +369,19 @@ let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
 
 " vim-node---------
-autocmd User Node if &filetype == "javascript" | setlocal expandtab | endif
-au FileType javascript call JavaScriptFold()
+autocmd User Node if &filetype == "js" | setlocal expandtab | endif
+
+" vim-js-context-coloring--------
+let g:js_context_colors_highlight_function_names=1
 
 " javascript-libraries-syntax.vim---------
 "let g:used_javascript_libs = 'underscore,backbone,angularjs'
+
+" nodejs_complete
+autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+
+" automatically open and close the popup menu / preview window
+ au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 
 " tcomment------------------
 let g:tc_option = ' col=1'
@@ -391,4 +423,3 @@ set clipboard=unnamed
 
 " show big letters
 let g:choosewin_overlay_enable = 1
-
