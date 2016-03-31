@@ -32,6 +32,8 @@ if iCanHazVundle == 0
 endif
 " --------------------------------------
 Bundle 'Valloric/YouCompleteMe'
+Bundle 'gerw/vim-latex-suite'
+Bundle 'xuhdev/vim-latex-live-preview'
 Bundle 'hdima/python-syntax'
 Bundle 'klen/python-mode'
 Bundle 'mattn/emmet-vim'
@@ -172,6 +174,17 @@ autocmd BufReadPost *
 
 nmap <leader><left> gT
 nmap <leader><right> gt
+
+" vim-latex-----
+
+autocmd Filetype tex setl updatetime=1  " latex live
+let g:livepreview_previewer = 'evince'  " latex live
+nmap <F12> :LLPStartPreview<cr>
+let g:tex_indent_items=0
+set grepprg=grep\ -nH\ $*
+let g:tex_flavor='latex'
+set iskeyword+=:
+autocmd BufEnter *.tex set sw=2
 
 " Vim-easymotion
 map  / <Plug>(easymotion-sn)
