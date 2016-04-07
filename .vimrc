@@ -77,12 +77,12 @@ set completeopt-=preview
 ca w!! w !sudo tee "%"
 
 "folding settings
-set foldmethod=indent "fold based on indent
+set foldmethod=marker "fold based on marker
 set foldnestmax=10 "deepest fold is 10 levels
 set foldenable "disable folding by default
 set foldlevel=1
 set foldcolumn=0
-nnoremap @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')
+nnoremap @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
 
 " when scrolling, keep cursor 3 lines away from screen border
 "set scrolloff=3
@@ -124,6 +124,7 @@ inoremap <C-x>x <C-x><C-o>
 Bundle 'ervandew/supertab'
 Bundle 'easymotion/vim-easymotion'
 Bundle 'edsono/vim-matchit'
+Bundle 'thinca/vim-quickrun'
 " autocomplete
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'sirver/ultisnips'
@@ -193,6 +194,17 @@ map  N <Plug>(easymotion-prev)
 nmap s <Plug>(easymotion-s2)
 let g:EasyMotion_startofline = 0
 let g:EasyMotion_smartcase = 1
+
+" Vim-quickrun-------
+let g:quickrun_config = {
+\   "_" : {
+\       "outputter" : "message",
+\   },
+\}
+
+let g:quickrun_no_default_key_mappings = 1
+" nmap <Leader>r <Plug>(quickrun)
+map <Leader>r :QuickRun<CR>
 
 " YouCompleteMe------
 let g:ycm_filetype_blacklist = {
@@ -340,7 +352,6 @@ let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libstdc++'
 let g:syntastic_enable_balloons = 1
 " use jshint
 let g:syntastic_javascript_checkers = ['jshint']
-let g:syntastic_check_on_open = 1
 let g:syntastic_mode_map = { 'passive_filetypes': ['scss', 'slim'] }
 
 "Python-mode ------------------------------
