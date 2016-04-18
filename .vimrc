@@ -125,6 +125,7 @@ Bundle 'ervandew/supertab'
 Bundle 'easymotion/vim-easymotion'
 Bundle 'edsono/vim-matchit'
 Bundle 'thinca/vim-quickrun'
+Bundle 'suan/vim-instant-markdown'
 " autocomplete
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'sirver/ultisnips'
@@ -150,8 +151,8 @@ Bundle 'scrooloose/syntastic'
 " python
 Bundle 'klen/python-mode'
 " latex
-Bundle 'gerw/vim-latex-suite'
-Bundle 'xuhdev/vim-latex-live-preview'
+" Bundle 'gerw/vim-latex-suite'
+" Bundle 'xuhdev/vim-latex-live-preview'
 " web
 Bundle 'mattn/emmet-vim'
 Bundle 'alvan/vim-closetag'
@@ -167,7 +168,7 @@ Bundle 'jelera/vim-javascript-syntax'
 Bundle 'vim-scripts/JavaScript-Indent'
 Bundle 'othree/javascript-libraries-syntax.vim'
 Bundle 'maksimr/vim-jsbeautify'
-Bundle 'ahayman/vim-nodejs-complete'
+" Bundle 'ahayman/vim-nodejs-complete'
 Bundle 'ternjs/tern_for_vim'
 Bundle 'mileszs/ack.vim'
 set dictionary+=$VIM.‘~\.vim\bundle\vim-node\dict\node.dict‘
@@ -206,6 +207,9 @@ let g:quickrun_no_default_key_mappings = 1
 " nmap <Leader>r <Plug>(quickrun)
 map <Leader>r :QuickRun<CR>
 
+" Vim-instant-markdown
+" let g:instant_markdown_autostart = 0
+
 " YouCompleteMe------
 let g:ycm_filetype_blacklist = {
       \ 'tagbar' : 1,
@@ -221,7 +225,7 @@ let g:ycm_filetype_blacklist = {
 let g:ycm_error_symbol = '✗'
 let g:ycm_warning_symbol = '⚠'
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
-let g:ycm_path_to_python_interpreter = '/Users/ysya/.pyenv/shims/python'
+let g:ycm_path_to_python_interpreter = '/Users/ysya/.pyenv/shims/python2.7'
 " set completeopt=longest,menu
 " autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 " inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
@@ -253,7 +257,7 @@ let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 " Nerdtree ----------------
 
 map <leader>tr :NERDTreeToggle<CR>
-let NERDTreeWinPos="right"
+let NERDTreeWinPos="left"
 let NERDTreeShowHidden=1
 let NERDTreeAutoDeleteBuffer=1
 let NERDTreeCaseSensitiveSort=1
@@ -283,7 +287,7 @@ endfunction
 " Vim-gitgutter'----------
 
 " Tagbar-----------
-let tagbar_left=1
+let tagbar_right=1
 nnoremap <Leader>tl :TagbarToggle<CR>
 let tagbar_width=32
 let g:tagbar_compact=1
