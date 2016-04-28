@@ -82,6 +82,8 @@ set foldnestmax=10 "deepest fold is 10 levels
 set foldenable "disable folding by default
 set foldlevel=1
 set foldcolumn=0
+let php_folding = 1
+set foldmarker={{{,}}}
 nnoremap @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
 
 " when scrolling, keep cursor 3 lines away from screen border
