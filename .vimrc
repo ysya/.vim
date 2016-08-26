@@ -34,6 +34,7 @@ set spell
 set ai
 set ic
 set nu
+set title
 set tabstop=4
 set shiftwidth=4
 set expandtab
@@ -64,6 +65,9 @@ set enc=utf8                 " add utf-8
 set ls=2                     " always show status bar
 set laststatus=2
 set t_Co=256
+" Working with split screen nicely
+" Resize Split When the window is resized"
+au VimResized * :wincmd =
 " show big letters
 let g:choosewin_overlay_enable = 1
 " Comment this line to enable autocompletion preview window
@@ -71,7 +75,7 @@ let g:choosewin_overlay_enable = 1
 " Disabled by default because preview makes the window flicker
 set completeopt-=preview
 " automatically open and close the popup menu / preview window
- au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 
 " save as sudo
 ca w!! w !sudo tee "%"
@@ -142,7 +146,12 @@ Bundle 'kien/ctrlp.vim'
 " Bundle 'mhinz/vim-signify' "turn on if you don't use git with your control system
 " code reading
 Bundle 'nathanaelkane/vim-indent-guides'
+Bundle 'elzr/vim-json'
 Bundle 'othree/yajs.vim'
+Bundle 'othree/javascript-libraries-syntax.vim'
+Bundle 'hail2u/vim-css3-syntax'
+Bundle 'cakebaker/scss-syntax.vim'
+Bundle 'othree/html5.vim'
 " code writing==========================
 Bundle 'terryma/vim-multiple-cursors'
 Bundle 'bronson/vim-trailing-whitespace'
@@ -153,8 +162,9 @@ Bundle 'scrooloose/syntastic'
 " python
 Bundle 'klen/python-mode'
 " latex
-" Bundle 'gerw/vim-latex-suite'
-" Bundle 'xuhdev/vim-latex-live-preview'
+" Bundle 'lervag/vimtex'
+Bundle 'gerw/vim-latex-suite'
+Bundle 'xuhdev/vim-latex-live-preview'
 " web
 Bundle 'mattn/emmet-vim'
 Bundle 'alvan/vim-closetag'
@@ -166,11 +176,13 @@ Bundle 'm2mdas/phpcomplete-extended'
 " nodejs
 Bundle 'moll/vim-node'
 Bundle 'pangloss/vim-javascript'
-Bundle 'jelera/vim-javascript-syntax'
-Bundle 'vim-scripts/JavaScript-Indent'
-Bundle 'othree/javascript-libraries-syntax.vim'
+Bundle 'digitaltoad/vim-pug'
+Bundle 'kchmck/vim-coffee-script'
+Bundle 'wavded/vim-stylus'
 Bundle 'maksimr/vim-jsbeautify'
-" Bundle 'ahayman/vim-nodejs-complete'
+Bundle 'syngan/vim-vimlint'
+" Bundle 'ynkdir/vim-vimlparser'
+Bundle 'ahayman/vim-nodejs-complete'
 Bundle 'ternjs/tern_for_vim'
 Bundle 'mileszs/ack.vim'
 set dictionary+=$VIM.‘~\.vim\bundle\vim-node\dict\node.dict‘
@@ -233,8 +245,6 @@ let g:ycm_path_to_python_interpreter = '/Users/ysya/.pyenv/shims/python2.7'
 " inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
 inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
 inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
-" inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
-" inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
 let g:ycm_key_list_select_completion=['<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion=['<C-p>', '<Up>']
 let g:ycm_confirm_extra_conf=0
@@ -258,7 +268,7 @@ let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 " Nerdtree ----------------
 
-map <leader>tr :NERDTreeToggle<CR>
+map <C-d> :NERDTreeToggle<CR>
 let NERDTreeWinPos="left"
 let NERDTreeShowHidden=1
 let NERDTreeAutoDeleteBuffer=1
@@ -266,6 +276,7 @@ let NERDTreeCaseSensitiveSort=1
 let NERDTreeMinimalUI=1
 let NERDTreeChDirMode=1
 let NERDTreeShowBookmarks=1
+" autocmd vimenter * NERDTree
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -290,7 +301,7 @@ endfunction
 
 " Tagbar-----------
 let tagbar_right=1
-nnoremap <Leader>tl :TagbarToggle<CR>
+nnoremap <C-t> :TagbarToggle<CR>
 let tagbar_width=32
 let g:tagbar_compact=1
 
