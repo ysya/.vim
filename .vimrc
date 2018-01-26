@@ -1,7 +1,11 @@
+" ==========================================
+" ProjectLink: https://github.com/ysya/.vim
+" Author:  ysya
+" ReadMe: README.md
+" Last_modify: 20180126
+" ==========================================
 " ============================================================================
 " Vundle initialization
-" Avoid modify this section, unless you are very sure of what you are doing
-
 " no vi-compatible
 set nocompatible
 
@@ -30,41 +34,42 @@ set background=dark
 colorscheme molokai
 " syntax highlighting
 filetype plugin indent on    " enable filetype-specific plugins
-set spell
-set ai
-set ic
-set nu
-set title
-set tabstop=4
-set shiftwidth=4
-set expandtab
-set softtabstop=4
-set smarttab
-set history=1000             " keep 1000 lines of command line history
-set number                   " enable line numbers
-set autoindent               " enable autoindent
-set smartindent
 syntax on                    " enable syntax highlighting
+set ai
+set autoindent               " enable autoindent
 set autoread                 " auto read when file is changed from outside
-set history=50               " keep 50 lines of command line history
-set mouse=a                  " mouse support
-set cursorline               " highlight current line
+set backspace=2              " make backspace work like most other apps
 set clipboard=unnamed        " yank to the system register (*) by default
+set cursorline               " highlight current line
+set enc=utf8                 " add utf-8
+set expandtab
+set history=2000             " keep 2000 lines of command line history
+set hlsearch
+set ic
+set ignorecase
+set incsearch
+set t_Co=256
+set laststatus=2
+set ls=2                     " always show status bar
+set mouse=a                  " mouse support
+set nobackup
+set nowrap
+set nu
+set number                   " enable line numbers
 set pastetoggle=<F10>
+set ruler                    " show the current row and column
+set shiftwidth=4
+set showcmd
 set showmatch                " Cursor shows matching ) and }
 set showmode                 " Show current mode
-set backspace=2              " make backspace work like most other apps
-set hlsearch
+set smartindent
+set smarttab
+set softtabstop=4
+set spell
+set title
+set tabstop=4
 set wildmenu
 set wildmode=longest,list,full
-set incsearch
-set ignorecase
-set showcmd
-set nowrap
-set enc=utf8                 " add utf-8
-set ls=2                     " always show status bar
-set laststatus=2
-set t_Co=256
 " Working with split screen nicely
 " Resize Split When the window is resized"
 au VimResized * :wincmd =
@@ -127,15 +132,9 @@ inoremap <C-x>x <C-x><C-o>
 
 " -------------------------
 " Install plugins the first time vim runs
-Bundle 'ervandew/supertab'
 Bundle 'easymotion/vim-easymotion'
 Bundle 'edsono/vim-matchit'
 Bundle 'thinca/vim-quickrun'
-Bundle 'suan/vim-instant-markdown'
-" autocomplete
-Bundle 'Valloric/YouCompleteMe'
-Bundle 'sirver/ultisnips'
-Bundle 'honza/vim-snippets'
 " Manage projecons
 Bundle 'scrooloose/nerdtree'
 Bundle 'jistr/vim-nerdtree-tabs'
@@ -143,7 +142,6 @@ Bundle 'Xuyuanp/nerdtree-git-plugin'
 Bundle 'airblade/vim-gitgutter'
 Bundle 'majutsushi/tagbar'
 Bundle 'kien/ctrlp.vim'
-" Bundle 'mhinz/vim-signify' "turn on if you don't use git with your control system
 " code reading
 Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'elzr/vim-json'
@@ -159,34 +157,9 @@ Bundle 'tomtom/tcomment_vim'
 Bundle 'tpope/vim-surround'
 Bundle 'godlygeek/tabular'
 Bundle 'scrooloose/syntastic'
-" python
-Bundle 'klen/python-mode'
-" latex
-" Bundle 'lervag/vimtex'
-Bundle 'gerw/vim-latex-suite'
-Bundle 'xuhdev/vim-latex-live-preview'
 " web
 Bundle 'mattn/emmet-vim'
 Bundle 'alvan/vim-closetag'
-Bundle 'mattn/webapi-vim'
-" php
-Bundle 'Shougo/vimproc'
-Bundle 'Shougo/unite.vim'
-Bundle 'm2mdas/phpcomplete-extended'
-" nodejs
-Bundle 'moll/vim-node'
-Bundle 'pangloss/vim-javascript'
-Bundle 'digitaltoad/vim-pug'
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'wavded/vim-stylus'
-Bundle 'maksimr/vim-jsbeautify'
-Bundle 'syngan/vim-vimlint'
-" Bundle 'ynkdir/vim-vimlparser'
-Bundle 'ahayman/vim-nodejs-complete'
-Bundle 'ternjs/tern_for_vim'
-Bundle 'mileszs/ack.vim'
-set dictionary+=$VIM.‘~\.vim\bundle\vim-node\dict\node.dict‘
-
 "User interface
 Bundle 'bling/vim-airline'
 Bundle 'vim-airline/vim-airline-themes'
@@ -194,11 +167,6 @@ Bundle 'evanmiller/nginx-vim-syntax'
 Bundle 'lilydjwg/colorizer'
 
 " plugin settings===========
-
-" Supertab----------
-" let g:SuperTabDefultCompletionType='context'
-let g:SuperTabDefaultCompletionType = '<C-X><C-U>'
-let g:SuperTabRetainCompletionType=2
 
 " Vim-easymotion----
 map  / <Plug>(easymotion-sn)
@@ -223,48 +191,6 @@ map <Leader>r :QuickRun<CR>
 
 " Vim-instant-markdown
 " let g:instant_markdown_autostart = 0
-
-" YouCompleteMe------
-let g:ycm_filetype_blacklist = {
-      \ 'tagbar' : 1,
-      \ 'qf' : 1,
-      \ 'notes' : 1,
-      \ 'markdown' : 1,
-      \ 'unite' : 1,
-      \ 'text' : 1,
-      \ 'vimwiki' : 1,
-      \ 'gitcommit' : 1,
-      \ 'nerdtree' : 1,
-      \}
-let g:ycm_error_symbol = '✗'
-let g:ycm_warning_symbol = '⚠'
-let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
-let g:ycm_path_to_python_interpreter = '/Users/ysya/.pyenv/shims/python2.7'
-" set completeopt=longest,menu
-" autocmd InsertLeave * if pumvisible() == 0|pclose|endif
-" inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
-inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
-inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
-let g:ycm_key_list_select_completion=['<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion=['<C-p>', '<Up>']
-let g:ycm_confirm_extra_conf=0
-let g:ycm_collect_identifiers_from_tags_files=1
-let g:ycm_cache_omnifunc=0
-let g:ycm_seed_identifiers_with_syntax=1
-let g:ycm_complete_in_comments = 1
-let g:ycm_complete_in_strings = 1
-let g:ycm_autoclose_preview_window_after_completion=1
-" let g:ycm_collect_identifiers_from_comments_and_strings = 0
-" let g:ycm_path_to_python_interpreter='/Users/ysya/.pyenv/shims/python'
-" nnoremap <leader>lo :lopen<CR> "open locationlist
-" nnoremap <leader>lc :lclose<CR>    "close locationlist
-let g:ycm_key_invoke_completion = '<C-q>'
-
-
-" Ultisnips--------
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 " Nerdtree ----------------
 
@@ -297,8 +223,6 @@ function! Multiple_cursors_after()
   endif
 endfunction
 
-" Vim-gitgutter'----------
-
 " Tagbar-----------
 let tagbar_right=1
 nnoremap <C-t> :TagbarToggle<CR>
@@ -314,16 +238,12 @@ let g:indent_guides_auto_colors=0
 autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=235
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=235
 
-" vim-multiple-cursors------
-
 " Tcomment------------------
 let g:tc_option = ' col=1'
 noremap <silent> <expr> <LocalLeader>cc ":TComment       " . (exists('b:tc_option') ? b:tc_option : g:tc_option) . "<CR>"
 noremap <silent> <expr> <LocalLeader>cb ":TCommentBlock  " . (exists('b:tc_option') ? b:tc_option : g:tc_option) . "<CR>"
 noremap <silent> <expr> <LocalLeader>ci ":TCommentInline " . (exists('b:tc_option') ? b:tc_option : g:tc_option) . "<CR>"
 noremap <silent> <expr> <LocalLeader>c$ ":TCommentRight  " . (exists('b:tc_option') ? b:tc_option : g:tc_option) . "<CR>"
-
-" Vim-surround-----------
 
 " Tabular---------------
 if exists(":Tabularize")
@@ -346,77 +266,6 @@ function! s:align()
     endif
 endfunction
 
-" Syntastic ------------------------
-let g:syntastic_ignore_files=[".*.py$"]
-" show list of errors and warnings on the current file
-nmap <leader>e :Errors<CR>
-" check also when just opened the file
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-" don't put icons on the sign column (it hides the vcs status icons of signify)
-let g:syntastic_enable_signs = 0
-let g:syntastic_error_symbol = '✗'  "set error or warning signs
-let g:syntastic_warning_symbol = '⚠'
-let g:syntastic_enable_highlighting = 0
-"let g:syntastic_python_checker="flake8,pyflakes,pep8,pylint"
-"let g:syntastic_python_checkers=['pyflakes']
-"highlight SyntasticErrorSign guifg=white guibg=black
-let g:syntastic_cpp_include_dirs = ['/usr/include/']
-let g:syntastic_cpp_remove_include_errors = 1
-let g:syntastic_cpp_check_header = 1
-let g:syntastic_cpp_compiler = 'clang++'
-let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libstdc++'
-let g:syntastic_enable_balloons = 1
-" use jshint
-let g:syntastic_javascript_checkers = ['jshint']
-let g:syntastic_mode_map = { 'passive_filetypes': ['scss', 'slim'] }
-
-"Python-mode ------------------------------
-let g:pymode_run = 1
-let g:pymode_run_bind = "<C-S-e>"
-let python_highlight_all = 1
-let g:pymode_rope = 1
-" Documentation
-let g:pymode_doc = 1
-let g:pymode_doc_bind = "<C-S-d>"
-"Linting
-let g:pymode_lint = 1
-let g:pymode_lint_checker = "pyflakes,pep8"
-let g:pymode_lint_write = 1
-let g:pymode_lint_unmodified = 0
-let g:pymode_lint_message = 1
-let g:pymode_lint_cwindow = 1
-let g:pymode_virtualenv = 1
-" Enable breakpoints plugin
-let g:pymode_breakpoint = 1
-let g:pymode_breakpoint_bind = '<leader>b'
-let g:pymode_syntax = 1
-let g:pymode_syntax_all = 1
-let g:pymode_syntax_indent_errors = g:pymode_syntax_all
-let g:pymode_syntax_space_errors = g:pymode_syntax_all
-let g:pymode_folding = 0
-let g:pymode_options_colorcolumn = 0
-let g:pymode_indent = 1
-let g:pymode_rope_goto_definition_bind = ',d'
-let g:pymode_rope_goto_definition_cmd = 'e'
-
-" Vim-latex--------------
-autocmd Filetype tex setl updatetime=1  " latex live
-let g:livepreview_previewer = 'evince'  " latex live
-nmap <F12> :LLPStartPreview<cr>
-let g:tex_indent_items=0
-set grepprg=grep\ -nH\ $*
-let g:tex_flavor='latex'
-set iskeyword+=:
-autocmd BufEnter *.tex set sw=2
-
-" javascript-libraries-syntax.vim---------
-"let g:used_javascript_libs = 'underscore,backbone,angularjs'
-
-" vim-node---------
-autocmd User Node if &filetype == "js" | setlocal expandtab | endif
-let javascript_enable_domhtmlcss = 1
-
 " closetag
 let g:closetag_filenames = "*.html,*.htm,*.xhtml,*.phtml,*php"
 
@@ -424,19 +273,4 @@ let g:closetag_filenames = "*.html,*.htm,*.xhtml,*.phtml,*php"
 let g:airline_powerline_fonts = 0
 let g:airline_theme = 'bubblegum'
 let g:airline#extensions#whitespace#enabled = 0
-
-" Signify ------------------------------(if you use)
-" this first setting decides in which order try to guess your current vcs
-" UPDATE it to reflect your preferences, it will speed up opening files
-" let g:signify_vcs_list = [ 'git', 'hg' ]
-" mappings to jump to changed blocks
-" nmap <leader>sn <plug>(signify-next-hunk)
-" nmap <leader>sp <plug>(signify-prev-hunk)
-" nicer colors
-" highlight DiffAdd           cterm=bold ctermbg=none ctermfg=119
-" highlight DiffDelete        cterm=bold ctermbg=none ctermfg=167
-" highlight DiffChange        cterm=bold ctermbg=none ctermfg=227
-" highlight SignifySignAdd    cterm=bold ctermbg=237  ctermfg=119
-" highlight SignifySignDelete cterm=bold ctermbg=237  ctermfg=167
-" highlight SignifySignChange cterm=bold ctermbg=237  ctermfg=227
 
