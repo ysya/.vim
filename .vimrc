@@ -131,9 +131,7 @@ nmap <leader><right> gt
 inoremap <C-x>x <C-x><C-o>
 
 " -------------------------
-" Install plugins the first time vim runs
 Bundle 'easymotion/vim-easymotion'
-Bundle 'edsono/vim-matchit'
 Bundle 'thinca/vim-quickrun'
 " Manage projecons
 Bundle 'scrooloose/nerdtree'
@@ -163,7 +161,7 @@ Bundle 'alvan/vim-closetag'
 "User interface
 Bundle 'bling/vim-airline'
 Bundle 'vim-airline/vim-airline-themes'
-Bundle 'evanmiller/nginx-vim-syntax'
+Bundle 'chr4/nginx.vim'
 Bundle 'lilydjwg/colorizer'
 
 " plugin settings===========
@@ -193,7 +191,6 @@ map <Leader>r :QuickRun<CR>
 " let g:instant_markdown_autostart = 0
 
 " Nerdtree ----------------
-
 map <C-d> :NERDTreeToggle<CR>
 let NERDTreeWinPos="left"
 let NERDTreeShowHidden=1
